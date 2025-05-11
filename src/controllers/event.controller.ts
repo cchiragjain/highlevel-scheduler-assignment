@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import { END_HOUR, START_HOUR, TIMEZONE } from "../config/constants";
 import { db } from "../config/firebase";
 
 const createEventSchema = z.object({
@@ -14,7 +15,7 @@ const createEventSchema = z.object({
  * @route POST /api/events
  * @desc Create a new event
  * @body datetime (ISO string), duration (in minutes)
- * @returns 200 on success, 422 if overlapping event exists
+ * @returns 200 on success, 400 on invalid input, 422 if overlapping event exists
  */
 export const createEvent = async (req: Request, res: Response) => {
   try {
@@ -31,13 +32,25 @@ export const createEvent = async (req: Request, res: Response) => {
 
     const { datetime, duration } = parsed.data;
 
+    const startLocalTime = DateTime.fromISO(datetime, { zone: TIMEZONE });
+    const endLocalTime = startLocalTime.plus({ minutes: duration });
+
+    // check if these times are inside our working hours window
+    if (
+      startLocalTime.hour < START_HOUR ||
+      endLocalTime.hour > END_HOUR ||
+      (endLocalTime.hour === END_HOUR && endLocalTime.minute > 0) // can end up getting time as 16:30 with duration of 45 mins (so will end outside our working hours)
+    ) {
+      // TODO: Check for correct status code here
+      res.status(422).json({ message: "Outside working hours" });
+      return;
+    }
+
     const eventsDb = db.collection("events");
 
-    // best to save all in utc and do conversions on runtime
-    const requestedStartTime = DateTime.fromISO(datetime, { zone: "utc" });
-    const requestedEndTime = requestedStartTime.plus({
-      minutes: duration,
-    });
+    // convert time to utc for checking in db
+    const requestedStartTime = startLocalTime.toUTC();
+    const requestedEndTime = endLocalTime.toUTC();
 
     // find all entries that we have already saved for that day using these datetime bounds
     const startOfDay = requestedStartTime.startOf("day").toISO();
@@ -60,6 +73,7 @@ export const createEvent = async (req: Request, res: Response) => {
         requestedStartTime < existingEnd &&
         requestedEndTime > existingStart
       ) {
+        // can be 409 Conflict as well
         res.status(422).json({ message: "SLot is already booked" });
         return;
       }
