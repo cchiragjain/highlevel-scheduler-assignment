@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import { DateTime } from "luxon";
+import { z } from "zod";
 import { db } from "../config/firebase";
+
+const createEventSchema = z.object({
+  datetime: z.string().refine((v) => DateTime.fromISO(v).isValid, {
+    message: "Invalid ISO date-time value",
+  }),
+  duration: z.number().int().positive(),
+});
 
 /**
  * @route POST /api/events
@@ -10,14 +18,25 @@ import { db } from "../config/firebase";
  */
 export const createEvent = async (req: Request, res: Response) => {
   try {
-    const { datetime, duration } = req.body;
+    const parsed = createEventSchema.safeParse({
+      datetime: req.body.datetime,
+      duration: Number(req.body.duration),
+    });
+
+    if (parsed.success === false) {
+      console.error(parsed.error.format());
+      res.status(400).json({ message: parsed.error.format() });
+      return;
+    }
+
+    const { datetime, duration } = parsed.data;
 
     const eventsDb = db.collection("events");
 
     // best to save all in utc and do conversions on runtime
     const requestedStartTime = DateTime.fromISO(datetime, { zone: "utc" });
     const requestedEndTime = requestedStartTime.plus({
-      minutes: parseInt(duration),
+      minutes: duration,
     });
 
     // find all entries that we have already saved for that day using these datetime bounds
@@ -36,7 +55,7 @@ export const createEvent = async (req: Request, res: Response) => {
       const existingEnd = existingStart.plus({ minutes: duration });
 
       // console.log({ existingStart, existingEnd });
-      // check overlap
+      // check overlap [a, b) and [c, d) a < d and b > c
       if (
         requestedStartTime < existingEnd &&
         requestedEndTime > existingStart
@@ -47,7 +66,7 @@ export const createEvent = async (req: Request, res: Response) => {
     }
 
     // if reached here means can create
-    await eventsDb.add({ datetime, duration });
+    await eventsDb.add({ datetime: requestedStartTime.toISO(), duration });
     res.status(200).json({ message: "Created event" });
     return;
 
