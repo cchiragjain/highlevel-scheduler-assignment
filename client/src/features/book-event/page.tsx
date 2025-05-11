@@ -50,9 +50,9 @@ export const BookEvent = () => {
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Book Event</h1>
 
       <div className="space-y-4">
-        <div className="flex gap-6 items-center">
+        <div className="grid grid-cols-3 gap-6 items-center">
           {/* datepicker */}
-          <div className="flex gap-4 mb-0">
+          <div className="col-span-1 flex gap-4 mb-0">
             <div className="flex items-center justify-start">
               <Calendar className="w-4 h-4 mr-2" />
               <label className="block text-sm font-medium text-gray-700">
@@ -69,11 +69,12 @@ export const BookEvent = () => {
               minDate={new Date()} // cant book events in past
               placeholderText="Select appointment date"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              wrapperClassName="w-full"
             />
           </div>
 
           {/* duration input */}
-          <div className="flex gap-4 mb-0">
+          <div className="col-span-1 flex gap-4 mb-0">
             <div className="flex items-center justify-start">
               <Clock className="w-6 h-6 mr-2" />
               <label className="block text-sm font-medium text-gray-700">
@@ -89,7 +90,7 @@ export const BookEvent = () => {
           </div>
 
           {/* timezone select input */}
-          <div className="flex gap-4 mb-0">
+          <div className="col-span-1 flex gap-4 mb-0">
             <div className="flex items-center justify-start">
               <Globe className="w-4 h-4 mr-2" />
               <label className="block text-sm font-medium text-gray-700">
