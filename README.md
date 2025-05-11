@@ -83,8 +83,7 @@ Returns a list of available time slots for a given date, adjusted to the request
   "slots": [
     "2025-05-11T17:30:00+05:30",
     "2025-05-11T18:00:00+05:30",
-    "2025-05-11T18:30:00+05:30",
-    ...
+    "2025-05-11T18:30:00+05:30"
   ],
   "timezone": "Asia/Kolkata"
 }
