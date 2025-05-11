@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
     "@types/express": "^5.0.1",
     "@types/express-rate-limit": "^6.0.2",
     "@types/jest": "^29.5.14",
