@@ -17,13 +17,13 @@
    git clone https://github.com/cchiragjain/highlevel-scheduler-assignment.git
    ```
 
-2. Inside the folder run
+2. Inside the `/server` folder and `/client` folder
 
    ```bash
    npm install
    ```
 
-3. Create .env file
+3. Create .env file inside `/server` folder
 
    ```txt
    TIMEZONE=US/Eastern
@@ -37,7 +37,8 @@
 
    1. Go in project settings -> service account -> create new private key -> save this key `serviceAccountKey.json` in project root.
 
-5. Now in a terminal run `npm run dev`. Your server should be up and running
+5. Now in a terminal run `npm run dev` for `/server`. Your server should be up and running at port `7373`
+6. Again inside client run `npm run dev` and frontend server will be live at `5173`.
 
 ## API Reference
 
@@ -144,3 +145,4 @@ Times are returned in the deafult timezone (`TIMEZONE` from env).
 - Can dockerise the app to ease in deployments
 - Create a logging middleware using something like winston and pass request-id for each request
 - For unit tests can mock firestore properly
+- At scale better to go with a date and time handling library in frontend like date-fns.
