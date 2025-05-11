@@ -43,6 +43,7 @@ export const listEvents = async (req: Request, res: Response) => {
     const startLocalTime = DateTime.fromISO(startDate, { zone: TIMEZONE });
     const endLocalTime = DateTime.fromISO(endDate, { zone: TIMEZONE });
     if (startLocalTime >= endLocalTime) {
+      console.log("inside list events check");
       res.status(400).json({ message: "startdate must be before enddata" });
       return;
     }
