@@ -9,3 +9,29 @@ export const formatISOToHourMinute = (isoString: string): string => {
 
   return `${hours}:${minutes} ${ampm}`;
 };
+
+export const formatISOToDate = (isoString: string) => {
+  const date = new Date(isoString);
+
+  // Array of month names to get "May"
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const formatted = `${
+    monthNames[date.getMonth()]
+  } ${date.getDate()}, ${date.getFullYear()}`;
+
+  return formatted;
+};

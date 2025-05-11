@@ -75,11 +75,11 @@ export const SlotSelector = ({
                   type="button"
                   onClick={() => handleBookSlot(slot)}
                   disabled={isBooking}
-                  className="ml-2 inline-flex items-center gap-1 rounded-md bg-blue-600 px-2.5 py-1
+                  className="ml-2 inline-flex items-center gap-1 rounded-md bg-blue-600 px-2.5 py-1 m-0
                     text-xs font-semibold text-white transition-colors
                     hover:bg-blue-700 disabled:opacity-60"
                 >
-                  {isBooking ? "Booking…" : "Confirm"}
+                  {isBooking ? "Booking…" : "Book"}
                   <CheckCircle className="h-4 w-4" />
                 </button>
               )}
