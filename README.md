@@ -6,6 +6,7 @@
     - [`POST /api/events`](#post-apievents)
     - [`GET /api/free-slots`](#get-apifree-slots)
     - [`GET /api/list-events`](#get-apilist-events)
+  - [UI Screenshots](#ui-screenshots)
   - [Running Tests](#running-tests)
   - [Improvements that can be made to scale](#improvements-that-can-be-made-to-scale)
 
@@ -136,9 +137,17 @@ Times are returned in the deafult timezone (`TIMEZONE` from env).
 - `400 Bad Request`: If input dates are invalid or `startDate >= endDate`
 - `500 Internal Server Error`: Unexpected failure while fetching data
 
+## UI Screenshots
+
+- Book event and list available events
+  ![alt text](images/image.png)
+  ![alt text](images/image-1.png)
+- list events with daternage
+  ![alt text](images/image-2.png)
+
 ## Running Tests
 
-- There are 17(8 from sheet) unit tests defined which can be run using `npm run test`
+- There are 17(8 from sheet) unit tests defined which can be run in the `server` folder using `npm run test`
 
 ## Improvements that can be made to scale
 
