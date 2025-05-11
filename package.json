@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
-    "firebase-admin": "^13.3.0"
+    "firebase-admin": "^13.3.0",
+    "luxon": "^3.6.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",

@@ -11,21 +11,26 @@ export const createEvent = async (req: Request, res: Response) => {
     const existing = await eventsDb.where("datetime", "==", datetime).get();
 
     if (existing.empty === false) {
-      return res.status(422).json({
+      // moved return below due to type error with @types/express refer: https://stackoverflow.com/questions/79089002/setting-up-express-with-typescript-no-overload-matches-this-call
+      // no return will cause to be added again
+      res.status(422).json({
         message: "Slot already booked",
       });
+      return;
     }
 
     // add new event datetime acts like unique id
     await eventsDb.add({ datetime, duration });
 
-    return res.status(200).json({
+    res.status(200).json({
       message: "Event Created Successfully",
     });
+    return;
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
+    res.status(500).json({
       message: "internal server error",
     });
+    return;
   }
 };
