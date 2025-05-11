@@ -3,10 +3,10 @@ import { Calendar, Clock, Globe } from "lucide-react";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { getFreeSlots } from "@/api/events";
-import { formatISOToHourMinute } from "@/lib/format-iso-to-norm";
+import { createEvent, getFreeSlots } from "@/api/events";
 import DatePicker from "react-datepicker";
 import { toast } from "sonner";
+import { SlotSelector } from "./components/slot-selector";
 
 export const BookEvent = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -119,25 +119,12 @@ export const BookEvent = () => {
         </button>
 
         {/* free slots display grid 4 */}
-        {freeSlots.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">
-              Available Slots
-            </h2>
-            <div className="grid grid-cols-4 gap-3">
-              {freeSlots.map((slot) => (
-                <button
-                  key={slot}
-                  onClick={() => console.log(slot)}
-                  className="bg-gray-100 text-gray-900 py-2 px-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {/* {slot} */}
-                  {formatISOToHourMinute(slot)}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        <SlotSelector
+          slots={freeSlots}
+          duration={duration}
+          createEvent={createEvent}
+          onSlotBooked={handleGetFreeSlots}
+        />
       </div>
     </div>
   );
