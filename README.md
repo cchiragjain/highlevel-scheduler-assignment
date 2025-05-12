@@ -154,4 +154,4 @@ Times are returned in the deafult timezone (`TIMEZONE` from env).
 - Can dockerise the app to ease in deployments
 - Create a logging middleware using something like winston and pass request-id for each request
 - For unit tests can mock firestore properly
-- At scale better to go with a date and time handling library in frontend like date-fns.
+<!-- - At scale better to go with a date and time handling library in frontend like date-fns. -->
